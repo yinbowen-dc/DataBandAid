@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "数据校验助手",
+  "version": "1.0.1",
+  "description": "提供 Excel 数据逻辑验证与比对功能",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [],
+  "sandbox": {
+    "pages": ["sandbox.html"]
+  }
+}

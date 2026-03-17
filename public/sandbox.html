@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQL Sandbox</title>
+    <script src="./alasql.min.js"></script>
+</head>
+<body>
+    <script>
+        // Initialize database once
+        try {
+            alasql('CREATE DATABASE test');
+        } catch (e) {
+            // Ignore if exists
+        }
+
+        window.addEventListener('message', async function(event) {
+            const { command, sql, data, id } = event.data;
+            
+            if (command === 'exec') {
+                try {
+                    alasql('USE test');
+                    
+                    // If data is provided, load it into a table named 'data'
+                    if (data && data.length > 0) {
+                        // Clear existing table data instead of dropping/recreating to be safer?
+                        // Or just DROP is fine.
+                        alasql('DROP TABLE IF EXISTS data');
+                        alasql('CREATE TABLE data');
+                        // Use alasql.tables.data because we are already in 'test' database context
+                        alasql.tables.data.data = data; 
+                    }
+
+                    const result = alasql(sql);
+                    
+                    // Send result back
+                    event.source.postMessage({ id, status: 'success', result }, event.origin);
+                } catch (error) {
+                    event.source.postMessage({ id, status: 'error', error: error.message }, event.origin);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
