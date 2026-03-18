@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import type { ReactElement } from 'react'
 
 type ToolId = 'sql-tool' | 'diff-tool' | 'sql-mapping' | 'json-checker'
 
@@ -14,7 +15,7 @@ interface ToolConfig {
     arrowHover: string
     titleHover: string
   }
-  icon: JSX.Element
+  icon: ReactElement
 }
 
 const TOOL_CONFIGS: ToolConfig[] = [
